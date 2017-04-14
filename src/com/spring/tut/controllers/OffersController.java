@@ -24,7 +24,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.spring.tut.model.Offers;
 import com.spring.tut.service.OffersService;
-
+/**
+ *  controller for offers activities such as fetch offers and create offers
+ * @author kapil
+ *
+ */
 @Controller
 public class OffersController {
 	@Autowired
