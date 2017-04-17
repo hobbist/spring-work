@@ -3,6 +3,7 @@ package com.spring.tut.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 
 import com.spring.tut.dao.OfferDAO;
@@ -20,14 +21,9 @@ public class OffersService {
 	public List<Offers> getCurrent(){
 		return dao.getOffers();
 	}
-	
+	@Secured({"ROLE_USER","ROLE_ADMIN"})
 	public boolean putNewOffer(Offers offer){
 		return dao.create(offer);
 	}
 
-	public void throwTestException(){
-		dao.getOffer(99999);
-		
-	}
-	
 }
