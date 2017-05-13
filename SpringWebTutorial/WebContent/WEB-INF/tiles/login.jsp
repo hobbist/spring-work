@@ -1,15 +1,13 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-	pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
-<head>
-<title>Login Page</title>
-<link href="${pageContext.request.contextPath}/static/main.css" rel="stylesheet" type="text/css" />
 
-</head>
-<body onload='document.f.username.focus();'>
-	<h3>Login with Username and Password</h3>
+<script type="text/javascript">
+$(document).ready(function(){
+document.f.username.focus();
+});
+</script>
+
+<h3>Login with Username and Password</h3>
 <c:if test="${param.error!=null}">
 <span class='loginError'>Login failed.check user and password try login again</span>
 </c:if>	
@@ -24,6 +22,11 @@
 				<td><input type='password' name='password' /></td>
 			</tr>
 			<tr>
+				<td>Remember me</td>
+				<td><input type='checkbox' name='remember-me' checked="checked"/></td>
+			</tr>
+			
+			<tr>
 				<td colspan='2'><input name="submit" type="submit"
 					value="Login" /></td>
 			</tr>
@@ -31,5 +34,3 @@
 		</table>
 	</form>
 	<p><a href="<c:url value="/newAccount"/>">Create New Account</a></p>
-</body>
-</html>

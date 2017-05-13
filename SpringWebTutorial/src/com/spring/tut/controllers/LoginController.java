@@ -9,11 +9,13 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.spring.tut.model.User;
 import com.spring.tut.service.UsersService;
+import com.spring.tut.validators.FormValidationGroup;
 
 @Controller
 public class LoginController {
@@ -51,16 +53,20 @@ public class LoginController {
 		return "admin";
 	}
 
+	@RequestMapping("/denied")
+	public String showDenied() {
+		return "denied";
+	}
 	
 	@RequestMapping(value="/createAccount" ,method=RequestMethod.POST)
 	/*java 303	 */
-	public String createAccount(@Valid User user,BindingResult result){
+	public String createAccount(@Validated(FormValidationGroup.class) User user,BindingResult result){
 		String view="";
 		if(result.hasErrors()){
 			view="newAccount";
 		}else{
 			user.setEnabled(true);
-			user.setAuthority("user");
+			user.setAuthority("ROLE_USER");
 			if(service.exists(user.getUsername())){
 				result.rejectValue("username", "DuplicateKey.user.usename");
 				return "newAccount";

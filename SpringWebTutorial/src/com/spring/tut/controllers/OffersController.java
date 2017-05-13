@@ -1,4 +1,5 @@
 package com.spring.tut.controllers;
+import java.security.Principal;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -17,6 +18,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -24,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.spring.tut.model.Offers;
 import com.spring.tut.service.OffersService;
+import com.spring.tut.validators.FormValidationGroup;
 /**
  *  controller for offers activities such as fetch offers and create offers
  * @author kapil
@@ -48,21 +51,36 @@ public class OffersController {
 	}
 	
 	@RequestMapping("/createOffers")
-	public String createOffers(Model model){
-		model.addAttribute("offers", new Offers());
+	public String createOffers(Model model,Principal principal){
+		Offers offer=null;
+		if(principal!=null){
+			String username=principal.getName();
+			 offer=service.getOffer(username);
+		}
+		if(offer==null){
+			offer=new Offers();
+		}
+		model.addAttribute("offers", offer);
 		return "createOffer";
 	}
 	
 	@RequestMapping(value="/doCreate" ,method=RequestMethod.POST)
 	/*java 303	 */
-	public String doCreate(Model model,@Valid Offers offers,BindingResult result){
+	public String doCreate(Model model,@Validated(value=FormValidationGroup.class) Offers offers,BindingResult result,Principal principal,@RequestParam(value="delete",required=false)String delete){
 		String view="";
 		if(result.hasErrors()){
 			view="createOffer";
 		}else{
-			System.out.println("validated");
-			service.putNewOffer(offers);
-			view="offerCreated";
+			if(delete==null){
+				String username=principal.getName();
+				offers.getUser().setUsername(username);
+				System.out.println("validated");
+				service.saveOrUpdate(offers);
+				view="offerCreated";
+			}else{
+				service.delete(offers.getId());
+				view="offerDeleted";
+			}
 		}
 		System.out.println(offers);
 		return view;

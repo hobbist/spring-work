@@ -42,3 +42,33 @@ textarea {
 span.loginError{
 	color:red;
 }
+
+div.footer{
+	font-size:smail;
+	color:gray;
+}
+div.content{
+	position: relative;
+	padding:40px;
+}
+div.header{
+position:relative;
+text-align:center;
+width:500px;
+height:40px;
+background-color: red;
+}
+a.login{
+	position:absolute;
+	top:10px;
+	right:10px;
+	color:white;
+}
+a.title{
+	color:white;
+	font-size: 35px;
+}
+
+input.delete{
+	border: 1px solid red;
+}
