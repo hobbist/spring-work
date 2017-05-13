@@ -1,5 +1,7 @@
 package com.spring.tut.service;
 
+
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
@@ -12,6 +14,7 @@ import com.spring.tut.model.Message;
 import com.spring.tut.model.User;
 @Service(value="usersService")
 public class UsersService {
+	private static Logger LOGGER=Logger.getLogger(UsersService.class);
 	@Autowired
 	private UserDao dao;
 	@Autowired
@@ -39,6 +42,11 @@ public class UsersService {
 	
 	public User getUser(String username){
 		return dao.getUser(username);
+	}
+
+	public List<Message> getMessages(String username) {
+		LOGGER.info("fetching messages for username:"+username);
+		return msgDao.getMessages(username);
 	}
 	
 

@@ -24,6 +24,8 @@
 			pattern="/admin" />
 		<security:intercept-url access="isAuthenticated()"
 			pattern="/createOffers" />
+			<security:intercept-url access="isAuthenticated()"
+			pattern="/getMessages" />
 		<security:intercept-url access="isAuthenticated()"
 			pattern="/doCreate" />
 		<security:intercept-url access="isAuthenticated()"

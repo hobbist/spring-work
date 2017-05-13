@@ -1,18 +1,21 @@
 package com.spring.tut.controllers;
 
+import java.security.Principal;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-
-import javax.validation.Valid;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.spring.tut.model.Message;
 import com.spring.tut.model.User;
 import com.spring.tut.service.UsersService;
 import com.spring.tut.validators.FormValidationGroup;
@@ -77,5 +80,21 @@ public class LoginController {
 		}
 		System.out.println(user);
 		return view;
+	}
+	@RequestMapping(value="/getMessages",method=RequestMethod.GET,produces="application/json")
+	@ResponseBody
+	public Map<String,Object> getMessages(Principal princicpal){
+		List<Message> messages=null;
+		if(princicpal==null){
+			messages=new ArrayList<Message>();
+		}
+		else{
+			String username=princicpal.getName();
+			messages=service.getMessages(username);
+		}
+		Map<String,Object> data=new HashMap<String,Object>();
+		data.put("messages", messages);
+		data.put("number",messages.size());
+		return data;
 	}
 }
